@@ -38,22 +38,21 @@ public class InsertionSortNoExchanges2125
 		int index = N-1;
 		
 		//8/31/2017
-		//2.1.24: Set the first positions to the smallest value in the list.
+		//2.1.24: Sentinel Value: Set the first 2 positions to the smallest value in the list.
 		//That way when these values are reached if the less method is called,
 		//It will never return true when we compare j with j-1.  Since the values
 		//in index will stop the less(a[j], a[j-1]) in the condition for going past
-		//the 0 index, it is called a sentinel value.
+		//the 0 index.
 		while((index>0))
 		{
 			if(less(InsertionSortNoExchanges2125.a[index], InsertionSortNoExchanges2125.a[index-1]))
 			{
 				exch2(InsertionSortNoExchanges2125.a, index, index-1);
-			//9/01/2017: StdOut.println("Max Index value = "+a[index]+" Min Index Value = "+a[index-1]+" Min Index = "+(index-1));
 			}
 			index--;
 		}
 		/************************/
-		for(int rtEndMinIndex = 2; rtEndMinIndex < N; rtEndMinIndex++)
+		for(int leftToRightArrayIndex = 2; leftToRightArrayIndex < N; leftToRightArrayIndex++)
 		{
 			//count=0;
 			exchange = false;
@@ -78,23 +77,24 @@ public class InsertionSortNoExchanges2125
 			//Insert a[i] among a[i-1], a[i-2], a[i-3]
 			
 			//j = i;
-			Comparable temp = InsertionSortNoExchanges2125.a[rtEndMinIndex];
-			int loopIndex = rtEndMinIndex;
+			Comparable minValueHolder = InsertionSortNoExchanges2125.a[leftToRightArrayIndex];
+			int targetPtr = leftToRightArrayIndex;
+			int neighborPtr = targetPtr-1;
 			/************************/
-			//9/01/2017: StdOut.println("************i = "+i);
-			while(less(temp, InsertionSortNoExchanges2125.a[loopIndex-1]))
-			{			
+			while(less(minValueHolder, InsertionSortNoExchanges2125.a[neighborPtr]))
+			{	
 				//move largest value right
-				a[loopIndex] = a[loopIndex-1];
-				min = loopIndex;
+				a[targetPtr] = a[neighborPtr];//swap with max value
 				exchange = true;
-				loopIndex--;				
+				targetPtr--;//Decrement the targetPtr, so we can overwrite the min value, with what was held in minValueHolder
+				//reset because target is decremented in the loop.
+				neighborPtr = targetPtr-1;//In order to set neighborPtr to the left position after the targetPtr, we must set it to the current value of tragetPtr-1.
 			}//for
-			//Assign min value to array maxIndex Position (loopIndex)
+			//Assign min value to array maxIndex Position (targetPtr)
 			/************************/
-			a[loopIndex]=temp;
+			a[targetPtr]=minValueHolder;//when no more values swapped, set the value of the targetPtr to the minValueHolder.
 			/************************/
-			//9/6/2017: Uncomment to Graph: insertionGraph(InsertionSortNoExchanges2125.a, rtEndMinIndex, min, exchange);
+			insertionGraph(InsertionSortNoExchanges2125.a, leftToRightArrayIndex, min, exchange);
 			yOffset-=35;
 		}//for
 	}
@@ -112,14 +112,16 @@ public class InsertionSortNoExchanges2125
 
 	private static void exch2(Comparable[] a, int i, int min)
 	{ 
-		Comparable temp = a[i]; 
+		Comparable minValueHolder = a[i]; 
 		a[i] = a[min]; 
-		a[min] = temp; 
+		a[min] = minValueHolder; 
 	}
 	private static void show(Comparable[] a)
 	{ // Print the array, on a single line.
 		for (int i = 0; i < a.length; i++)
-		StdOut.println(a[i] + " ");
+		{
+		//StdOut.println(a[i] + " ");
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -148,13 +150,9 @@ public class InsertionSortNoExchanges2125
 			int test =(int)(Math.abs(charConvert.charAt(0)-'<'));//< ASCII Int is 60
 			String test1 =Integer.toString(test);
 			Double y2 = Double.parseDouble(test1);
-
 			Double xCenter = (x1+x1)/2;
 			Double yCenter = (y1+yOffset+y2+yOffset)/2;
-			
-			//9/01/2017: StdOut.println("KPOSITION = "+k+", Y2 = "+y2+", iPosition = "+i+", iValue = "+iValue+", A[i] = "+a[i]+", i+1 = "+(less(i,length)?(i+1):i)+", MinValue = "+minValue+", minPosition = "+min+", A[min] = "+a[min]+", EXCHANGE = "+exchange);
-		
-				int nextPosition =0;
+			int nextPosition =0;
 			int position =0;
 			if (less(i,length))
 			{
@@ -268,7 +266,7 @@ public class InsertionSortNoExchanges2125
 	{
 		StdDraw.setXscale(-5, halfSquaredDimensionHigh+5);
 		StdDraw.setYscale(-5, squaredDimensionHigh+5);
-		StdDraw.setPenColor(StdDraw.GRAY);
+		StdDraw.setPenColor(StdDraw.GREEN);
 	}
 	
 	public static boolean isSorted(Comparable[] a)

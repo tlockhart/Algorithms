@@ -95,21 +95,21 @@ public class VisualElementarySorts2118
 	}
 	public static void setI(int i)
 	{
-		VisualElementarySorts.iValue = i;
+		VisualElementarySorts2118.iValue = i;
 	}
 	public static int getI()
 	{
 		
-		return VisualElementarySorts.iValue;
+		return VisualElementarySorts2118.iValue;
 	}
 	public static void setJ(int j)
 	{
-		VisualElementarySorts.jValue = j;
+		VisualElementarySorts2118.jValue = j;
 	}
 	public static int getJ()
 	{
 		
-		return VisualElementarySorts.jValue;
+		return VisualElementarySorts2118.jValue;
 	}
 	private static boolean less(Comparable v, Comparable w)
 	{ 
@@ -188,21 +188,21 @@ public class VisualElementarySorts2118
 			if((y2== iValue)&&(i == k))//we compare the position(y2, iValue) and the index value (i, k)to see if they are equal, then we highlight that
 			{
 				//8/9/17: Entries in red are the new positions of minimum value elements after swopped by the exchange method
-				drawRed(VisualElementarySorts.squaredDimensionHigh);
+				drawRed(VisualElementarySorts2118.squaredDimensionHigh);
 			}
 			else if(y2==minValue)
 			{
 				//8/9/17: Entries in Blue are the original positions of minimum value elements before swopped by the exchange method
-				drawBlue(VisualElementarySorts.squaredDimensionHigh);
+				drawBlue(VisualElementarySorts2118.squaredDimensionHigh);
 			}
 			//8/9/17: k is the for loop examining each index value in a,  color the bar gray for any index value k, that is not greater than or equal to the minimum value index [i].
 			else if((y2<=iValue)&&(!(k>=i)))
 			{
 				//8/9/17: Entries in Gray are in their final positions, because they have already been swopped by the exchange method
-				drawGray(VisualElementarySorts.squaredDimensionHigh);
+				drawGray(VisualElementarySorts2118.squaredDimensionHigh);
 			}
 			else
-				drawBlack(VisualElementarySorts.squaredDimensionHigh);
+				drawBlack(VisualElementarySorts2118.squaredDimensionHigh);
 			StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			x1+=3.0;//X offset
 		}
@@ -272,25 +272,25 @@ public class VisualElementarySorts2118
 			{
 				//8/9/17: Entries in Gray are in their final positions, because they have already been swopped by the exchange method
 				//9/1/2017: StdOut.println("**i or i+1: 1 = "+(less(i,length)?(i+1):i));
-				drawGray(VisualElementarySorts.squaredDimensionHigh);
+				drawGray(VisualElementarySorts2118.squaredDimensionHigh);
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			}
 			else if((y2 == iValue))
 			{
 				if(exchange)
 				{
-					drawBlack(VisualElementarySorts.squaredDimensionHigh);
+					drawBlack(VisualElementarySorts2118.squaredDimensionHigh);
 				}
 				else if(!exchange)
 				{
-					drawRed(VisualElementarySorts.squaredDimensionHigh);
+					drawRed(VisualElementarySorts2118.squaredDimensionHigh);
 				}
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			}
 			else if((y2 == minValue)/*&&(y2 != iValue)*/&&(k==min)&&(exchange)/*8/10/2017:do not select more than one position containing the same value*//*(y2 == minValue)&&*//*(iValue<minValue)(y2 == minValueFromIValueMinusCount)*//*y2==iValue*/)
 			{
 				//drawBlack();
-				drawRed(VisualElementarySorts.squaredDimensionHigh);//red is the value that has been moved.
+				drawRed(VisualElementarySorts2118.squaredDimensionHigh);//red is the value that has been moved.
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 				//drawGray();
 				//StdOut.println("**Y2 = "+y2+", iValue = "+iValue+", A[i] = "+a[i]+", MinValue = "+minValue+", A[min] = "+a[min]);
@@ -298,7 +298,7 @@ public class VisualElementarySorts2118
 			//else if(exchange &&(y2 == minValue))
 				else if(exchange&&(!((i-min)>1)&&(k==i+1)&&(less(a[i+1], a[i]))))
 			{
-				drawBlue(VisualElementarySorts.squaredDimensionHigh);
+				drawBlue(VisualElementarySorts2118.squaredDimensionHigh);
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			}
 			//if i Position minus min position is greater than 1
@@ -309,7 +309,7 @@ public class VisualElementarySorts2118
 			else if(((i-min)>1)&&((exchange)&&(k<i)))
 			{
 				//drawGray();
-				drawBlack(VisualElementarySorts.squaredDimensionHigh);
+				drawBlack(VisualElementarySorts2118.squaredDimensionHigh);
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 				//drawGray();
 			}
@@ -319,7 +319,7 @@ public class VisualElementarySorts2118
 			else if(((i-min)>1)&&((exchange)/*&&(k<i)*/&&(less(a[i+1], a[i]))&&(k==position/*(nextPosition=k-(less(i,length)?(i+1):i))==0)*/)))
 			{
 				//9/1/2017: StdOut.println("**i+1 or i: 2 = "+(less(i,length)?(i+1):i));
-				drawBlue(VisualElementarySorts.squaredDimensionHigh);
+				drawBlue(VisualElementarySorts2118.squaredDimensionHigh);
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 				//drawGray();
 			}
@@ -327,14 +327,14 @@ public class VisualElementarySorts2118
 			//the current index position k is equal to the position to the right of i (i+1), and no exchange.
 			else if((!exchange)&&(less(a[i+1], a[i]))&&(k==position))
 			{
-				drawBlue(VisualElementarySorts.squaredDimensionHigh);
+				drawBlue(VisualElementarySorts2118.squaredDimensionHigh);
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 				
 			}
 			else
 			{
 				//9/1/2017: StdOut.println("**NextPostion3 = "+!((k-(less(i,length)?(i+1):i))==0));
-				drawGray(VisualElementarySorts.squaredDimensionHigh);
+				drawGray(VisualElementarySorts2118.squaredDimensionHigh);
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			}
 			
@@ -359,7 +359,7 @@ public class VisualElementarySorts2118
 		//int count = 0;
 		boolean exchange = false;
 		boolean hValueSet = false;
-		VisualElementarySorts.secondGraphCalled = false;
+		VisualElementarySorts2118.secondGraphCalled = false;
 		int h = 1;
 		int count = 0;
 		//int i = 0;
@@ -497,7 +497,7 @@ public class VisualElementarySorts2118
 			{
 				position =i;
 			}
-			if(VisualElementarySorts.isOutputBlue(k, i, j, min, hValue, a, exchange))
+			if(VisualElementarySorts2118.isOutputBlue(k, i, j, min, hValue, a, exchange))
 			{
 				drawBlue2(squaredDimensionHigh);
 				
@@ -507,7 +507,7 @@ public class VisualElementarySorts2118
 				//8/25/2016: Bar Graphs
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			}
-			else if(VisualElementarySorts.isOutputBlack(k, j, min, hValue, a, exchange))
+			else if(VisualElementarySorts2118.isOutputBlack(k, j, min, hValue, a, exchange))
 			{
 				//8/21/2017:yOffset+=35;//must go back up the y Axis to redraw the bar as red instead of black, to symbolize the end.
 				drawWhite2(squaredDimensionHigh);
@@ -525,7 +525,7 @@ public class VisualElementarySorts2118
 				StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 				//StdOut.println("*****BLACK Draw Enabled, "+ "HVALUE = "+hValue);
 			}
-			else if(VisualElementarySorts.isOutputRed(k, j, min, hValue, a, exchange))
+			else if(VisualElementarySorts2118.isOutputRed(k, j, min, hValue, a, exchange))
 			{
 				//8/22/2017: 
 				//xCenter = (x1+x1)/2;
@@ -640,7 +640,7 @@ public class VisualElementarySorts2118
 			{
 				position =i;
 			}
-			if(VisualElementarySorts.isOutputBlue(k, i, j, min, hValue, a, exchange))
+			if(VisualElementarySorts2118.isOutputBlue(k, i, j, min, hValue, a, exchange))
 			{
 				drawBlue2(squaredDimensionHigh);
 				
@@ -650,7 +650,7 @@ public class VisualElementarySorts2118
 				//8/25/2016: Bar Graphs
 				//StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 			}
-			else if(VisualElementarySorts.isOutputBlack(k, j, min, hValue, a, exchange))
+			else if(VisualElementarySorts2118.isOutputBlack(k, j, min, hValue, a, exchange))
 			{
 				//8/21/2017:yOffset+=35;//must go back up the y Axis to redraw the bar as red instead of black, to symbolize the end.
 				drawWhite2(squaredDimensionHigh);
@@ -668,7 +668,7 @@ public class VisualElementarySorts2118
 				//StdDraw.filledRectangle(xCenter, yCenter, 1, (Math.abs(y2-y1))/2);
 				//StdOut.println("*****BLACK Draw Enabled, "+ "HVALUE = "+hValue);
 			}
-			else if(VisualElementarySorts.isOutputRed(k, j, min, hValue, a, exchange))
+			else if(VisualElementarySorts2118.isOutputRed(k, j, min, hValue, a, exchange))
 			{
 				//8/22/2017: 
 				//xCenter = (x1+x1)/2;
@@ -819,21 +819,21 @@ public class VisualElementarySorts2118
 		//int nextCompareValue = j+
 		//if ((nextMin)>=0)
 		//{
-			if((i==j)&&(VisualElementarySorts.isIndexEQJ(k, j))/*&&((VisualElementarySorts.isLastMinExchangedOrSingleSwop(j, min, hValue, a)))*/)
+			if((i==j)&&(VisualElementarySorts2118.isIndexEQJ(k, j))/*&&((VisualElementarySorts.isLastMinExchangedOrSingleSwop(j, min, hValue, a)))*/)
 				value = true;
 		return value;
 	}
 	public static boolean isOutputBlue(int k, int i, int j, int min, int hValue, Comparable[] a, boolean exchange)
 	{
 		boolean value = false;
-			if(VisualElementarySorts.isANewCompareStarted(i, j, k, min, hValue, a))
+			if(VisualElementarySorts2118.isANewCompareStarted(i, j, k, min, hValue, a))
 				value = true;
 		return value;
 	}
 	public static boolean isOutputBlack(int k, int j, int min, int hValue, Comparable[] a, boolean exchange)
 	{
 		boolean value = false;
-			if(((VisualElementarySorts.isIndexEQJ(k, j))&&(exchange)&&(VisualElementarySorts.isLastMinExchangedOrSingleSwop(j, min, hValue, a)))||((VisualElementarySorts.isHValGTEQ1(hValue))&&(VisualElementarySorts.isIndexEQJ(k, j))&&(exchange)&&(!(VisualElementarySorts.isLastMinExchangedOrMultSwops(j, min, hValue, a))))||((VisualElementarySorts.isIndexEQMin(k, min))&&(exchange)&&(!(VisualElementarySorts.isLastMinExchangedOrMultSwops(j, min, hValue, a)))))
+			if(((VisualElementarySorts2118.isIndexEQJ(k, j))&&(exchange)&&(VisualElementarySorts2118.isLastMinExchangedOrSingleSwop(j, min, hValue, a)))||((VisualElementarySorts2118.isHValGTEQ1(hValue))&&(VisualElementarySorts2118.isIndexEQJ(k, j))&&(exchange)&&(!(VisualElementarySorts2118.isLastMinExchangedOrMultSwops(j, min, hValue, a))))||((VisualElementarySorts2118.isIndexEQMin(k, min))&&(exchange)&&(!(VisualElementarySorts2118.isLastMinExchangedOrMultSwops(j, min, hValue, a)))))
 			value = true;
 		return value;
 	}
@@ -841,7 +841,7 @@ public class VisualElementarySorts2118
 	{
 		boolean value = false;
 		
-			if(((VisualElementarySorts.isHValGTEQ1(hValue))&&VisualElementarySorts.isKBetweenMinAndJ(k, j, min))||((!(VisualElementarySorts.isIndexEQJ(k, j)))&&(!(VisualElementarySorts.isIndexEQMin(k, min)))))
+			if(((VisualElementarySorts2118.isHValGTEQ1(hValue))&&VisualElementarySorts2118.isKBetweenMinAndJ(k, j, min))||((!(VisualElementarySorts2118.isIndexEQJ(k, j)))&&(!(VisualElementarySorts2118.isIndexEQMin(k, min)))))
 			value = true;
 		return value;
 	}
@@ -849,7 +849,7 @@ public class VisualElementarySorts2118
 	{
 		boolean value = false;
 		//if(/*(!(VisualElementarySorts.isJMinExchanged(j, min, a)))*/!exchange||(exchange/*(VisualElementarySorts.isJMinExchanged(j, min, a)*/)&&(VisualElementarySorts.isLastMinExchanged(j, min, hValue)))
-		if(((!exchange)&&(VisualElementarySorts.isIndexEQJ(k, j)))||(exchange&&(VisualElementarySorts.isLastMinExchangedOrMultSwops(j, min, hValue, a))&&(VisualElementarySorts.isIndexEQMin(k, min))))
+		if(((!exchange)&&(VisualElementarySorts2118.isIndexEQJ(k, j)))||(exchange&&(VisualElementarySorts2118.isLastMinExchangedOrMultSwops(j, min, hValue, a))&&(VisualElementarySorts2118.isIndexEQMin(k, min))))
 			value = true;
 		return value;
 	}
@@ -969,8 +969,8 @@ public class VisualElementarySorts2118
 		//Test1: selectionSort(a);
 		//Test2: insertionSort(a);
 		//selectionSort(a);
-		insertionSort(a);
-		//shellSort(a);
+		//insertionSort(a);
+		shellSort(a);
 		//Test3: shellSort(a);
 		assert isSorted(a);
 		//show(a);

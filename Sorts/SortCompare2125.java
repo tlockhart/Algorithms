@@ -4,10 +4,11 @@
 
 //run: java -cp ".;algs4_ts.jar;InsertionSortNoExchanges2125.jar" SortCompare2125
 
+
 // Run with 4 String arguments: (1)alg1 (2)alg2 (3)N - Array Length (4)T - Repeat times
 //java -cp ".;algs4_ts.jar;InsertionSortNoExchanges2125.jar" SortCompare2125 Noexchange2125 Selection 10000 100
 
-//java -cp ".;algs4_ts.jar;InsertionSortNoExchanges2125.jar" SortCompare2125 InsertionX Insertion 10000 100
+//java -cp ".;algs4_ts.jar;InsertionSortNoExchanges2125.jar" SortCompare2125 Insertion InsertionX 10000 100
 
 //Error: NaN means "Not a Number" and is the result of undefined operations on floating point 
 //numbers like for example dividing zero by zero. (Note that while dividing a non-zero 
@@ -21,9 +22,11 @@ public class SortCompare2125
 		//Calls the appropriate STD Sorting algorithm based on the string arguments
 		Stopwatch timer = new Stopwatch();
 		if (alg.equals("Insertion")) Insertion.sort(a);
+		if (alg.equals("InsertionX")) InsertionX.sort(a);
 		if (alg.equals("Selection")) Selection.sort(a);
 		if (alg.equals("Shell")) Shell.sort(a);
 		if (alg.equals("Merge")) Merge.sort(a);
+		if (alg.equals("MergeBU")) MergeBU.sort(a);
 		if (alg.equals("Quick")) Quick.sort(a);
 		if (alg.equals("Heap")) Heap.sort(a);
 		if (alg.equals("Noexchange2125")) InsertionSortNoExchanges2125.insertionSort(a);
@@ -53,10 +56,18 @@ public class SortCompare2125
 		//double t1 = timeRandomInput(alg1, N, T);
 		StdOut.println("T1 = "+t1);
 		BigDecimal t2 = new BigDecimal(timeRandomInput(alg2, N, T)); // total for alg2
+		BigDecimal zero = new BigDecimal(0);
 		//double t2 = timeRandomInput(alg2, N, T);
 		StdOut.println("T2 = "+t2);
 		StdOut.printf("For %d random Doubles\n %s is", N, alg1);
-		StdOut.printf(" %.1f times faster than %s\n", (t2.divide(t1, 2, BigDecimal.ROUND_HALF_UP)), alg2);//t2/t1, alg2);
+		if(!(t1== zero))
+		{
+			StdOut.printf(" %.1f times faster than %s\n", (t2.divide(t1, 2, BigDecimal.ROUND_HALF_UP)), alg2);//t2/t1, alg2);
 		//StdOut.printf(" %.1f times faster than %s\n", t2/t1, alg2);
+		}
+		else if(!(t2==zero))
+		{
+			StdOut.printf(" %.1f times faster than %s\n", (t1.divide(t2, 2, BigDecimal.ROUND_HALF_UP)), alg2);
+		}
 	}
 }
