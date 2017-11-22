@@ -4,6 +4,7 @@ package sorts;
 import java.lang.*;
 //Import classes from algs4
 import exercises.*;
+import java.util.Random;
 
 /** This program uses quicksort to sort an arraylist.
  *	
@@ -15,12 +16,16 @@ import exercises.*;
  *  Written:       9/30/2017
  *  Last updated:  9/30/2017
  *
- *  <p><b>Requirement:</b> Class must be in <b>sorts</b> package and <b>exercises.*</b> and <b>java.lang.*</b> must be imported.</p> 
- *  <p><b>Javadoc:</b> javadoc -author -version -private -classpath .;algs4_sts.jar; -d .\javadoc Quicksort2311.java</p>
- *  <p><b>Compilation:</b>   javac -cp .;algs4_sts.jar; Quicksort2311.java</p>
- *  <p><b>Execution 1:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2311 &#60;quicksort.txt</p>
- *  <p><b>Execution 2:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2311 &#60;qsShuffled.txt</p>
- *  <p><b>Execution 3:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2311 &#60;distinctKeys.txt</p>
+ *  <p><b>Requirement:</b> Class must be in <b>sorts</b> package and <b>exercises.*</b> must be imported.<b>
+ *        The class must be executed from the DoublingTest.java class to print the time of execution.  Note: <b>
+ *		  PrintArray for cmd line output and Graph for java window has been disabled for testing:</p> 
+ 
+   *Executable Jar: jar cvfm QuickSort2318_DoublingTest.jar manifest.txt QuickSort2318_DoublingTest.class
+ *  <p><b>Javadoc:</b> javadoc -author -version -private -classpath .;algs4_sts.jar; -d .\javadoc Quicksort2319_DoublingTest.java</p>
+ *  <p><b>Compilation:</b>   javac -cp .;algs4_sts.jar; Quicksort2319_DoublingTest.java</p>
+ *  <p><b>Execution 1:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2319_DoublingTest &#60;quicksort.txt</p>
+ *  <p><b>Execution 2:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2319_DoublingTest &#60;qsShuffled.txt</p>
+ *  <p><b>Execution 3:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2319_DoublingTest &#60;distinctKeys.txt</p>
  *
  *  <p><b>Summary:</b> QuickSort uses the divide and conquer method to sort a list of values.  However, 
  *	instead of dividing the array in half, it identifies a pivotValue, which is used to find a partition, 
@@ -77,7 +82,7 @@ import exercises.*;
  *  
  *  
  */
-public class Quicksort2311
+public class Quicksort2319_DoublingTest
 {
 	
 	public static final int tableHeight = 1300;//400
@@ -91,24 +96,112 @@ public class Quicksort2311
 	public static int leftIncrementCtr =0;
 	public static int rightDecrementCtr = 0;
 	public static int partitionCtr =0;
-	public static int rtComparisonCtr =0;
-	public static int ltComparisonCtr =0;
 	
+	//Note to run as a Median of 5 of 3 uncomment the one of the selections below:
+	/****************************************************************************/
+	public static int limit = 5;
+	//public static int limit = 3;
+	/****************************************************************************/
+	
+	public static void execute()
+	{
+		sort(Quicksort2319_DoublingTest.a);
+	}
 	public static void sort(Comparable[] a)
 	{
-		//9/30/2017:StdRandom.shuffle(a);
+		/*StdOut.println("**Print Array before Shuffle**");
+		printArray2(a);*/
+		StdRandom.shuffle(a);
 		/*****************************************/
-		dualPrint(a, 0, 0, 0, exchange, exchange2, false, false, 0 , 0, 0);
+		//Add sentinel value at the beginning and end of the A array
+		sortFirstAndLastIndex(a);
+		/*****************************************/
+		//10/03/2017: 
+		//dualPrint(a, 0, 0, 0, exchange, exchange2, false, false, 0 , 0, 0);
 		/*****************************************/
 		sort(a, 0, a.length-1);
 	}
 	public static void sort(Comparable[] a, int lo, int hi)
 	{
+		/*StdOut.println("**Print A array before partition**");
+		printArray2(a);*/
+		int j;
 		if(hi <= lo) return;
-		int j = partition(a, lo, hi);// sort lo, hi and partition
-		//StdOut.println("*****I am back in sort*****");
-		Quicksort2311.sort(a, lo, j-1);//sort left side
-		Quicksort2311.sort(a, j+1, hi);//sort right side
+		
+		//Find a random index value of median of 3, and exchange it with the pivot position:
+		/**********************************/
+		int m = median(a, lo, hi, limit);
+		exch(a, lo, m);
+		/**********************************/
+		j = partition(a,lo, hi);// sort lo, hi and partition
+		
+		// StdOut.println("Partition Index = "+j+" A Partition Value = "+a[j]);
+		Quicksort2319_DoublingTest.sort(a, lo, j-1);//sort left side
+		Quicksort2319_DoublingTest.sort(a, j+1, hi);//sort right side
+		
+	}
+	private static int getRandomIndex(Comparable[] a, int lo, int hi, int limit)
+	{		
+		int medianIndex;
+		int numOfElements = hi+1 - lo;
+		
+		//if(((hi+1)%2)==0)//even
+		/*10/08: if(((numOfElements)>=limit)&&((numOfElements%2)!=0))
+		{*/
+			if(numOfElements >= limit)
+			{
+				//StdOut.println("Number of Elements = "+numOfElements);
+				medianIndex = (hi+1+lo)/2;
+				//10/08: int ltRtHalves = hi-medianIndex;
+				int ltRtHalves = limit/2;
+				//StdOut.println("**lo = "+lo+" hi = "+hi+" MedianIndex = "+medianIndex+" LtRtOffset = "+ltRtHalves);
+				int leftIndex = leftEnd(ltRtHalves, medianIndex);
+				int rightIndex = rightEnd(ltRtHalves, medianIndex);
+				
+				/*StdOut.println("**UnSorted Subrange**");
+				printSubArray(Quicksort2319_DoublingTest.a, leftIndex, rightIndex);*/
+				
+				Insertion.sort(Quicksort2319_DoublingTest.a, leftIndex, rightIndex);
+				
+				/*StdOut.println("**Sorted Subrange**"+" LeftEnd = "+leftIndex+" RightEnd = "+rightIndex);
+				printSubArray(Quicksort2319_DoublingTest.a, leftIndex, rightIndex);
+				
+				StdOut.println("**MedianIndex = "+medianIndex+" A Value = "+a[medianIndex]);*/
+			}
+			else
+				medianIndex = lo;
+			
+		/*10/08:}
+		else
+			medianIndex =lo;*/
+		return medianIndex;
+	}
+	public static int leftEnd(int ltRtHalves, int medianIndex)
+	{
+		int leftEnd = medianIndex - ltRtHalves;
+		//StdOut.println("The left end = "+leftEnd);
+		return leftEnd;
+	}
+	public static int rightEnd(int ltRtHalves, int medianIndex)
+	{
+		int rightEnd = medianIndex + ltRtHalves;
+		//StdOut.println("The right end = "+rightEnd);
+		return rightEnd;
+	}
+	private static void printSubArray(Comparable[] a, int leftIndex, int rightIndex)
+	{
+		//StdOut.println("SUBARRAY sorted:");
+		//StdOut.println();
+		for(int i = leftIndex; i<=rightIndex; i++)
+		{
+			StdOut.print(Quicksort2319_DoublingTest.a[i]+" ");
+		}
+		StdOut.println();
+	}
+	private static int median(Comparable[] a, int lo, int hi, int limit)
+	{		
+		//int N = a.length;
+		return getRandomIndex(a, lo, hi, limit);
 	}
 	private static int partition(Comparable[] a, int lo, int hi)
 	{
@@ -118,6 +211,7 @@ public class Quicksort2311
 		leftScanIndex = lo;
 		rightScanIndex=hi+1;
 		Comparable pivot = a[lo];
+		//Comparable pivot = a[medianIndex];
 		while(true)
 		{
 			exchange = false;
@@ -126,7 +220,7 @@ public class Quicksort2311
 			while(less(a[++leftScanIndex], pivot)) 
 			{
 				leftScanIncremented = true;
-				if(leftScanIndex==hi) break;/*right scan, removing condition causese quadratic time*/
+				//if(leftScanIndex==hi) break;/*right scan, removing condition causes quadratic time, sentinel value is hi and sufficient*/
 					//ltComparisonCtr++;
 			}
 			leftIncrementCtr = Math.abs(leftScanIndex-leftIncrementCtr);
@@ -134,7 +228,7 @@ public class Quicksort2311
 					/*****************************************/
 					if(leftScanIncremented)
 					{
-						dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
+						//10/03/2017: dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
 					}
 					/*****************************************/
 					leftScanIncremented = false;
@@ -145,14 +239,14 @@ public class Quicksort2311
 			while(less(pivot, a[--rightScanIndex])) 
 			{
 				rightScanDecremented = true;
-				if(rightScanIndex == lo) break;/*left scan, removing condition causese quadratic time*/
+				//if(rightScanIndex == lo) break;/*left scan, removing condition causes quadratic time, sentinel value is lo and sufficient*/
 					//rtComparisonCtr++;
 			}
 			rightDecrementCtr = Math.abs(rightDecrementCtr -rightScanIndex);
 					/*****************************************/
 					if(rightScanDecremented)
 					{
-						dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
+						//10/03/2017:dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
 					}
 					rightScanDecremented=false;
 					//reset Counters;
@@ -160,6 +254,9 @@ public class Quicksort2311
 					leftIncrementCtr =0;
 					/*****************************************/
 			if (leftScanIndex >= rightScanIndex)break;/*lt/rt cros*/
+			
+			/*int m = median(a, lo, hi, limit);
+			exch(a, low, m);*/
 			rightScanDecremented = false;
 			leftScanIncremented = false;
 			/*make sure no entries to left of the leftScanIndex are greater than pivot, 
@@ -169,7 +266,7 @@ public class Quicksort2311
 			/*****************************************/
 			if(exchange)
 			{
-				dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
+				//10/03/2017: dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
 			}
 			exchange = false;
 			/*****************************************/
@@ -182,13 +279,32 @@ public class Quicksort2311
 		/*****************************************/
 		if(exchange2)
 		{
-			dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
+			//10/03/2017:dualPrint(a, lo, leftScanIndex, rightScanIndex, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
 		}
 		/*****************************************/
 		exchange2 = false;
 		int partitionValue = rightScanIndex;
 
 		return partitionValue;
+	}
+	
+	public static void sortFirstAndLastIndex(Comparable [] a)
+	{
+		for (int i=0; i<a.length-1; i++)
+		{
+			if(less(a[i+1], a[i]))
+			{
+				exch(a, (i+1), i);
+			}
+		}
+		for(int i = a.length-1; i>0; i--)
+		{
+			if(less(a[i], a[i-1]))
+			{
+				exch(a, i, (i-1));
+			}
+		}
+		//return a;
 	}
 	private static boolean less(Comparable v, Comparable w)
 	{ 
@@ -219,9 +335,9 @@ public class Quicksort2311
 	private static void dualPrint(Comparable[] a, int lo, int ltToRtIndexPtr, int rtToLtIndexPtr, boolean exchange, boolean exchange2, boolean leftScanIncremented, boolean rightScanDecremented, int leftIncrementCtr,  int rightDecrementCtr, int partitionCtr)
 	{
 		/*****************************************/
-		Quicksort2311.printArray(a);
-		//Quicksort2311.graph(a, leftScanIndex, rightScanIndex, exchange, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr);
-		Quicksort2311.graph(a, lo, ltToRtIndexPtr, rtToLtIndexPtr, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
+		Quicksort2319_DoublingTest.printArray2(a);
+		//Quicksort2319_DoublingTest.graph(a, leftScanIndex, rightScanIndex, exchange, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr);
+		Quicksort2319_DoublingTest.graph(a, lo, ltToRtIndexPtr, rtToLtIndexPtr, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
 		/*****************************************/
 	}
 	@SuppressWarnings("unchecked")
@@ -290,7 +406,7 @@ public class Quicksort2311
 		
 			if(isInitialArraySet)
 			{
-				drawGreen(Quicksort2311.tableHeight);
+				drawGreen(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isMultLTIndexFound)
@@ -302,7 +418,7 @@ public class Quicksort2311
 					else if (i>0)
 						k=k+1;
 					charConvert = a[k].toString();
-					drawBlack(Quicksort2311.tableHeight);
+					drawBlack(Quicksort2319_DoublingTest.tableHeight);
 					StdDraw.text(xCenter, yCenter, charConvert);
 					//StdOut.println("Left xCenter = "+xCenter+" Character = "+charConvert+" K = "+k);
 					if(i<leftIncrementCtr-1)
@@ -321,7 +437,7 @@ public class Quicksort2311
 					else if (i>0)
 						k=k+1;
 					charConvert = a[k].toString();
-					drawBlack(Quicksort2311.tableHeight);
+					drawBlack(Quicksort2319_DoublingTest.tableHeight);
 					StdDraw.text(xCenter, yCenter, charConvert);
 					//StdOut.println("Right xCenter = "+xCenter+" Character = "+charConvert+" K = "+k);
 					if(i<rightDecrementCtr-1)
@@ -333,44 +449,44 @@ public class Quicksort2311
 			}
 			if(isRTIndexExchanged)
 			{
-				drawRed(Quicksort2311.tableHeight);
+				drawRed(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isLTIndexExchanged)
 			{
-				drawBlue(Quicksort2311.tableHeight);
+				drawBlue(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(hasRTCrossedLTIndex)
 			{
-				drawMagenta(Quicksort2311.tableHeight);
+				drawMagenta(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(hasLTCrossedRTIndex)
 			{
-				drawCyan(Quicksort2311.tableHeight);
+				drawCyan(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isNoIndexFound)
 			{
-				drawGray(Quicksort2311.tableHeight);
+				drawGray(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isRTIndexEqual2Zero)
 			{
-				drawGray(Quicksort2311.tableHeight);
+				drawGray(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isPartitionFound&&!isInitialArraySet)
 			{
-				drawOrange(Quicksort2311.tableHeight);
+				drawOrange(Quicksort2319_DoublingTest.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			x1+=3.0;//X offset
 		}		 
 		 //Wait for a short period
        StdDraw.pause(500);
-	   Quicksort2311.yOffset-=35;
+	   Quicksort2319_DoublingTest.yOffset-=35;
 	}
 	public static boolean isRTIndexEqual2Zero(int k, int rtToLtIndexPtr, boolean exchange, boolean exchange2, boolean isInitialArraySet)
 	{
@@ -535,40 +651,61 @@ public class Quicksort2311
 		}
 		return true;
 	}
-	public static void copyArray(Comparable[] destination, String[] source)
+	public static void copyArray(Comparable[] destination, int[] source)
 	{
 		for (int i=0; i<source.length; i++)
 		{
 			destination[i] = source[i];
 		}
 	}
-	public static void printArray(Comparable[] array)
+	public static void printArray(int[] array)
 	{
+		for (int i=0; i<(array.length); i++)
+		{
+			StdOut.print(array[i]+" *");
+		}
+		StdOut.println("");
+	}
+	public static void printArray2(Comparable[] array)
+	{
+		StdOut.println("");
 		for (int i=0; i<array.length; i++)
 		{
-			//StdOut.print(array[i]+" ");
+			StdOut.print(array[i]+" ");
 		}
-		//StdOut.println("");
+		StdOut.println("");
 	}
 	public static void setArrayLength(int arrayLength)
 	{
-		//int Quicksort2317.arrayLength = a.length;
-		Quicksort2311.a = new Comparable[arrayLength];
+		//int Quicksort2319_DoublingTest.arrayLength = a.length;
+		Quicksort2319_DoublingTest.a = new Comparable[arrayLength];
 	}
 	@SuppressWarnings("unchecked")
-	public static void main(String[] args)
+	public static void startQS(String[] args)
 	{ 
 	// Read strings from standard input, sort them, and print.
-		String[] a = StdIn.readAllStrings();
+		//String[] a = StdIn.readAllStrings();
 		//StdOut.println("Length = "+a.length);
-		setArrayLength(a.length);
-		copyArray(Quicksort2311.a, a);
+		//Comparable[] a;
+		int[] inputArray = new int[args.length];
+		setArrayLength(args.length);
+		for(int i = 0; i<args.length; i++)
+		{
+			inputArray[i] = Integer.parseInt(args[i]);
+		}
+		copyArray(Quicksort2319_DoublingTest.a, inputArray);
 		/*****************************************/
-		//PrintArray for cmd line output:
-		Quicksort2311.printArray(Quicksort2311.a);
-		Quicksort2311.graph(a, 0, 0, 0, exchange, exchange2, false, false, 0, 0, 0);
+		//10/03/2017: PrintArray for cmd line output and Graph for java window has been disabled for testing:
+		/****************************************************************************************/
+		/*Quicksort2319_DoublingTest.printArray(Quicksort2319_DoublingTest.a);
+		Quicksort2319_DoublingTest.graph(a, 0, 0, 0, exchange, exchange2, false, false, 0, 0, 0);*/
 		/*****************************************/
-		Quicksort2311.sort(Quicksort2311.a);
-		//StdOut.println("***The left comparison ctr is = "+ltComparisonCtr+" The right comparison ctr is = "+rtComparisonCtr);
+		/*StdOut.println("UNSORTED Array A values are: ");
+		printArray2(a);*/
+		Quicksort2319_DoublingTest.execute();
+		/*StdOut.println("The left end = "+leftEnd());
+		StdOut.println("The right end = "+rightEnd());
+		StdOut.println("Sorted Array A values are: ");
+		printArray2(Quicksort2319_DoublingTest.a);*/
 	}
 }//class

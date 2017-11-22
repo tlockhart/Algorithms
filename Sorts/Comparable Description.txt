@@ -1,0 +1,32 @@
+http://javarevisited.blogspot.com/2011/06/comparator-and-comparable-in-java.html
+
+Comparable - A comparable is used to pass data object by type.  The Comparable interface is included by default in Java, in java.lang package.  It implements the compareTo(Object o) method.  Comparable is used to implement Java's natural ordering of objects, or to create your own.  In collections, elements can be sorted automically, if they have a natural ordering.
+
+They can be used in two ways:
+(1) Generic Type: Primitive Data Type With Natural Ordering - A comparable object is used when you want to embed an objects natural order inside a class, without defining the natural order, in a seperate class, like a Comparator.  When you have a primitive data type, you can simply assign it to a Comparable object or Comparable array as an Instance Field in a class, or pass it as an argument to a method (like sort P289). In this case, a user defined less() method (or exch()) method, will implement the compareTo() method, to compare the object's natural ordering (P245).  The less() method takes two Comparable arguments, which are passed to the compareTo() method.  The compareTo() method uses the object's natural ordering, to compare their values [(P245) private static boolean less(Comparable v, Comparable w){ /*v<w return -1, v=w return 0,v>w return +1*/ return v.compareTo(w) < 0;}].  NOTE1: In this case, the compareTo() method compares the this reference with the other Comparable object passed into its argument [v.compareTo(w), where v is this reference].  The actual data type will be passed into a Comparable object, as a method argument from the client (main P245 sort(a)). Comparable objects can be converted back into a primitive types by using its .toString() method, and using the Wrapper classes parse methods [Double.parseDouble()]. Note: No class has to implement comparable when using it this way.  Nor do you need to import it as it is included by default.
+
+(2)Generic Type: Custom Data Type (Transaction) -  A custom data type is a class that is composed of multiple data elements. When you want to define a new natural ordering for a custom data type in the compareTo() method, use this process.  In some cases it is necessary to pass a custom data type into an abstract data structure.  For instance you could have a Stack of transactions.  In such an instance, the custom data type must implement Comparable (public class Transaction implements Comparable), so it can be considered a Comparable object.  Now when the compareTo() method[public int compareTo(Transaction that){return Double.compare(this.amount, that.amount}] is called, we can pass a Transaction object as an argument.  The compareTo() method will call the compare() method, in order to compare the two Instance Fields natural order. Optionally, the data type, the compareTo() method will accept, can be defined as a parameterized type in the Transaction's class definition (P79 public class Transaction implements Comparable<Transaction>).  NOTE1: If using a parameterized type, the same data type defined in the class definition <Transaction>, must be used as the argument in the compareTo() method, because the custom data type is a Comparable and this is what the compareTo() method accepts. The Comparable object's (Transaction) specific Instance Field is the actually data that will be compared in the compare() method (like p 247).  NOTE2: You can use a less() method to implement the compareTo() method.  However, you must pass it an instance of the custom data type (Transaction), as it is a Comparable object.  However, the functionality is defined directly inside of the compareTo() and compare() methods [public int compareTo(Transaction that){return Double.compare(this.amount, that.amount);} similar to the less() method on page 245].
+
+(3)Generic Type: Multiple Keys [Comparator (P338)] - Since a custom data type can have multiple Instance Fields, it maybe necessary to order custom data types using different Instance Fields, as keys in a sorting routine(P339 Item with Multiple Keys).  The java Comparator interface allows us to build multiple key comparisons within a single class.  The Comparator API is available in the java.util.Comparator API.  A Comparator has a compare() method that takes two Comparable arguments, which can be passed to a compareTo() method, to make a comparision [P340 public int compare(Transaction v, Transaction w){return v.who.compareTo(w.who)}].  Data types(Abstract Data Types) that implement the Comparator interface can pass a custom Comparator object to a method, such as sort.  The Comparator contains the ordering of the data type.  The inner class WhenOrder below is a Comparator, that identifies the comparison between the who Instance Fields, in the custom Transaction Data Type.  Therefore, when an Abstract Data Type calls its sort method, with an instance of the custom data type (Tranaction) to be sorted and the corresponding comparator, it can proceed with the comparison, with the Instance Fields identified in the Comparator (WhenOrder).  When the less() method is called, it uses the Comparator object c  to compare the instance of the custom data type(Transaction) objects V and W, and return true if the condition is true.  Back in the sort Method, if the condition is true the exchange occurs.
+
+public static class WhenOrder implements Comparator<Transaction>{
+     @override
+     public int compare(Transaction v, Transaction w){
+	return v.who.compareTo(w.who);
+     }
+}
+public static void sort(Object[] a, Comparator c)
+{
+     int N = a.length;
+     for(int i = 1; i < N; i++)
+	for(int j = i; j > 0 && less(c, a[j], a[j-1]); j--)
+	     exch(a, j, j-1);
+}
+private static boolean less(Comparator c, Object v, Object w)
+{return c.compare(v, w) < 0;}
+
+private static void exch(Object[] a, int i, int j)
+{Object t = a[i]; a[i] = a[j]; a[j] = t;}
+}
+
+Therefore, a Comparator allows us to separate the definition of the type from the definition of the types order.

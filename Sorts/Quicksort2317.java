@@ -16,11 +16,11 @@ import exercises.*;
  *  Last updated:  9/30/2017
  *
  *  <p><b>Requirement:</b> Class must be in <b>sorts</b> package and <b>exercises.*</b> and <b>java.lang.*</b> must be imported.</p> 
- *  <p><b>Javadoc:</b> javadoc -author -version -private -classpath .;algs4_sts.jar; -d .\javadoc Quicksort2311.java</p>
- *  <p><b>Compilation:</b>   javac -cp .;algs4_sts.jar; Quicksort2311.java</p>
- *  <p><b>Execution 1:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2311 &#60;quicksort.txt</p>
- *  <p><b>Execution 2:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2311 &#60;qsShuffled.txt</p>
- *  <p><b>Execution 3:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2311 &#60;distinctKeys.txt</p>
+ *  <p><b>Javadoc:</b> javadoc -author -version -private -classpath .;algs4_sts.jar; -d .\javadoc Quicksort2317.java</p>
+ *  <p><b>Compilation:</b>   javac -cp .;algs4_sts.jar; Quicksort2317.java</p>
+ *  <p><b>Execution 1:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2317 &#60;quicksort.txt</p>
+ *  <p><b>Execution 2:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2317 &#60;qsShuffled.txt</p>
+ *  <p><b>Execution 3:</b>     java -cp ../;.;algs4_sts.jar; sorts.Quicksort2317 &#60;distinctKeys.txt</p>
  *
  *  <p><b>Summary:</b> QuickSort uses the divide and conquer method to sort a list of values.  However, 
  *	instead of dividing the array in half, it identifies a pivotValue, which is used to find a partition, 
@@ -77,7 +77,7 @@ import exercises.*;
  *  
  *  
  */
-public class Quicksort2311
+public class Quicksort2317
 {
 	
 	public static final int tableHeight = 1300;//400
@@ -85,6 +85,7 @@ public class Quicksort2311
 	public static final int tableWidth = 500/10;//400/10
 	public static boolean exchange = false;
 	public static boolean exchange2 = false;
+	//public static boolean arrayLength;
 	public static Comparable[] a;
 	public static int leftScanIndex;
 	public static int rightScanIndex;
@@ -96,7 +97,16 @@ public class Quicksort2311
 	
 	public static void sort(Comparable[] a)
 	{
-		//9/30/2017:StdRandom.shuffle(a);
+		StdRandom.shuffle(a);
+		/*****************************************/
+		//Add sentinel value at the end of the array above
+		for (int i=0; i<a.length-1; i++)
+		{
+			if(less(a[i+1], a[i]))
+			{
+				exch(a, i, (i+1));
+			}
+		}
 		/*****************************************/
 		dualPrint(a, 0, 0, 0, exchange, exchange2, false, false, 0 , 0, 0);
 		/*****************************************/
@@ -107,8 +117,8 @@ public class Quicksort2311
 		if(hi <= lo) return;
 		int j = partition(a, lo, hi);// sort lo, hi and partition
 		//StdOut.println("*****I am back in sort*****");
-		Quicksort2311.sort(a, lo, j-1);//sort left side
-		Quicksort2311.sort(a, j+1, hi);//sort right side
+		Quicksort2317.sort(a, lo, j-1);//sort left side
+		Quicksort2317.sort(a, j+1, hi);//sort right side
 	}
 	private static int partition(Comparable[] a, int lo, int hi)
 	{
@@ -126,7 +136,7 @@ public class Quicksort2311
 			while(less(a[++leftScanIndex], pivot)) 
 			{
 				leftScanIncremented = true;
-				if(leftScanIndex==hi) break;/*right scan, removing condition causese quadratic time*/
+				//if(leftScanIndex==hi) break;/*right scan, removing condition causes quadratic time, sentinel value is hi and sufficient*/
 					//ltComparisonCtr++;
 			}
 			leftIncrementCtr = Math.abs(leftScanIndex-leftIncrementCtr);
@@ -145,7 +155,7 @@ public class Quicksort2311
 			while(less(pivot, a[--rightScanIndex])) 
 			{
 				rightScanDecremented = true;
-				if(rightScanIndex == lo) break;/*left scan, removing condition causese quadratic time*/
+				//if(rightScanIndex == lo) break;/*left scan, removing condition causes quadratic time, sentinel value is lo and sufficient*/
 					//rtComparisonCtr++;
 			}
 			rightDecrementCtr = Math.abs(rightDecrementCtr -rightScanIndex);
@@ -219,9 +229,9 @@ public class Quicksort2311
 	private static void dualPrint(Comparable[] a, int lo, int ltToRtIndexPtr, int rtToLtIndexPtr, boolean exchange, boolean exchange2, boolean leftScanIncremented, boolean rightScanDecremented, int leftIncrementCtr,  int rightDecrementCtr, int partitionCtr)
 	{
 		/*****************************************/
-		Quicksort2311.printArray(a);
-		//Quicksort2311.graph(a, leftScanIndex, rightScanIndex, exchange, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr);
-		Quicksort2311.graph(a, lo, ltToRtIndexPtr, rtToLtIndexPtr, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
+		Quicksort2317.printArray(a);
+		//Quicksort2317.graph(a, leftScanIndex, rightScanIndex, exchange, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr);
+		Quicksort2317.graph(a, lo, ltToRtIndexPtr, rtToLtIndexPtr, exchange, exchange2, leftScanIncremented, rightScanDecremented, leftIncrementCtr, rightDecrementCtr, partitionCtr);
 		/*****************************************/
 	}
 	@SuppressWarnings("unchecked")
@@ -290,7 +300,7 @@ public class Quicksort2311
 		
 			if(isInitialArraySet)
 			{
-				drawGreen(Quicksort2311.tableHeight);
+				drawGreen(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isMultLTIndexFound)
@@ -302,7 +312,7 @@ public class Quicksort2311
 					else if (i>0)
 						k=k+1;
 					charConvert = a[k].toString();
-					drawBlack(Quicksort2311.tableHeight);
+					drawBlack(Quicksort2317.tableHeight);
 					StdDraw.text(xCenter, yCenter, charConvert);
 					//StdOut.println("Left xCenter = "+xCenter+" Character = "+charConvert+" K = "+k);
 					if(i<leftIncrementCtr-1)
@@ -321,7 +331,7 @@ public class Quicksort2311
 					else if (i>0)
 						k=k+1;
 					charConvert = a[k].toString();
-					drawBlack(Quicksort2311.tableHeight);
+					drawBlack(Quicksort2317.tableHeight);
 					StdDraw.text(xCenter, yCenter, charConvert);
 					//StdOut.println("Right xCenter = "+xCenter+" Character = "+charConvert+" K = "+k);
 					if(i<rightDecrementCtr-1)
@@ -333,44 +343,44 @@ public class Quicksort2311
 			}
 			if(isRTIndexExchanged)
 			{
-				drawRed(Quicksort2311.tableHeight);
+				drawRed(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isLTIndexExchanged)
 			{
-				drawBlue(Quicksort2311.tableHeight);
+				drawBlue(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(hasRTCrossedLTIndex)
 			{
-				drawMagenta(Quicksort2311.tableHeight);
+				drawMagenta(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(hasLTCrossedRTIndex)
 			{
-				drawCyan(Quicksort2311.tableHeight);
+				drawCyan(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isNoIndexFound)
 			{
-				drawGray(Quicksort2311.tableHeight);
+				drawGray(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isRTIndexEqual2Zero)
 			{
-				drawGray(Quicksort2311.tableHeight);
+				drawGray(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			if(isPartitionFound&&!isInitialArraySet)
 			{
-				drawOrange(Quicksort2311.tableHeight);
+				drawOrange(Quicksort2317.tableHeight);
 				StdDraw.text(xCenter, yCenter, charConvert);
 			}
 			x1+=3.0;//X offset
 		}		 
 		 //Wait for a short period
        StdDraw.pause(500);
-	   Quicksort2311.yOffset-=35;
+	   Quicksort2317.yOffset-=35;
 	}
 	public static boolean isRTIndexEqual2Zero(int k, int rtToLtIndexPtr, boolean exchange, boolean exchange2, boolean isInitialArraySet)
 	{
@@ -553,7 +563,7 @@ public class Quicksort2311
 	public static void setArrayLength(int arrayLength)
 	{
 		//int Quicksort2317.arrayLength = a.length;
-		Quicksort2311.a = new Comparable[arrayLength];
+		Quicksort2317.a = new Comparable[arrayLength];
 	}
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args)
@@ -562,13 +572,13 @@ public class Quicksort2311
 		String[] a = StdIn.readAllStrings();
 		//StdOut.println("Length = "+a.length);
 		setArrayLength(a.length);
-		copyArray(Quicksort2311.a, a);
+		copyArray(Quicksort2317.a, a);
 		/*****************************************/
 		//PrintArray for cmd line output:
-		Quicksort2311.printArray(Quicksort2311.a);
-		Quicksort2311.graph(a, 0, 0, 0, exchange, exchange2, false, false, 0, 0, 0);
+		Quicksort2317.printArray(Quicksort2317.a);
+		Quicksort2317.graph(a, 0, 0, 0, exchange, exchange2, false, false, 0, 0, 0);
 		/*****************************************/
-		Quicksort2311.sort(Quicksort2311.a);
+		Quicksort2317.sort(Quicksort2317.a);
 		//StdOut.println("***The left comparison ctr is = "+ltComparisonCtr+" The right comparison ctr is = "+rtComparisonCtr);
 	}
 }//class
